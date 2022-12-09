@@ -1,0 +1,20 @@
+{
+  "name": "realtestjs",
+  "version": "1.0.0",
+  "description": "Some test for js language",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node index.js",
+    "serve": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "nodemon": "^2.0.20",
+    "ytdl-core": "^4.11.2"
+  }
+}
