@@ -22,7 +22,8 @@ activeLink.href = `http://localhost:4000/download?URL=https://www.youtube.com${a
 activeLink.click()
 
 for (let i = 0; i < allLinks.length; i++) {
+    if (i = 1) break
     activeLink.href = `http://localhost:4000/download?URL=https://www.youtube.com${allLinks[i].URL}&name=${allLinks[i].name}`
     activeLink.click()
-    if (i > 5) break
+   
 }

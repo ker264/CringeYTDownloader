@@ -3,6 +3,7 @@ import cors from 'cors';
 import ytdl from 'ytdl-core';
 import path from 'path';
 import bodyParser from 'body-parser'
+import { CLIENT_RENEG_LIMIT } from 'tls';
 
 const urlEncodedParser = bodyParser.urlencoded({
     extended: false,
@@ -25,15 +26,15 @@ app.listen(4000, () => {
 let downloadedNames = []
 
 app.get('/download', (req, res) => {
-    let URL = req.query.URL;
-    let name = req.query.name.trim()    
-    res.header('Content-Disposition', `attachment; filename=${downloadedNames.length}.mp3"`);
-    downloadedNames.push(name);
-    // res.header('Content-Disposition', 'attachment; filename="video.mp4"');
+    let URL = req.query.URL;    
+    let name = req.query.name.trim() 
+    name = name.replace('【','[')
+    name = name.replace('】',']')
+    res.header(`Content-Disposition`, `attachment; filename="${name}.webm"`);    
+    downloadedNames.push(name);    
     ytdl(URL, {
         quality: "lowestaudio"
-    }).pipe(res);
-    console.log(downloadedNames[downloadedNames.length - 1]);
+    }).pipe(res);    
 });
 
 app.get('/', (req, res) => {
