@@ -3,7 +3,7 @@
 }.heading {
     font-family: Arial;
     margin-top:40vh;
-}.URL-input, .convert-button, .parse-button {
+}.URL-input, .convert-button {
     font-size:1.3em;
     padding:5px 10px;
 }.URL-input {
