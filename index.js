@@ -28,12 +28,16 @@ let downloadedNames = []
 app.get('/download', (req, res) => {
     let URL = req.query.URL;    
     let name = req.query.name.trim() 
-    name = name.replace('【','[')
-    name = name.replace('】',']')
-    res.header(`Content-Disposition`, `attachment; filename="${name}.webm"`);    
+    // name = name.replace('【','[')
+    // name = name.replace('】',']')
+    console.log(name);
+    name = name.replace(RegExp("[^\\d\\w\\s()\\[\\],.:;!?/']", "g"),'_')
+    console.log(name);
+    res.header(`Content-Disposition`, `attachment; filename="${name}.mp3"`);    
     downloadedNames.push(name);    
     ytdl(URL, {
-        quality: "lowestaudio"
+        quality: "bestaudio",
+        format: "mp3"
     }).pipe(res);    
 });
 
