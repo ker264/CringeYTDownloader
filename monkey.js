@@ -1,3 +1,31 @@
+(function () {
+    'use strict';
+
+    document.addEventListener("DOMContentLoaded", () => {
+        console.log("DOM Loaded")
+        let intervalGUI = setInterval(() => {
+            if (loadGUI()) clearInterval(intervalGUI)
+        }, 1000);
+    });
+})();
+
+function loadGUI() {
+    let playMenuList = document.querySelectorAll(".play-menu")
+    
+
+    playMenuList.forEach(playMenu => {
+        let dlButton = document.createElement('button');
+        dlButton.innerHTML = "Скачать"
+        dlButton.addEventListener('click', () => {
+            console.log('Вы тыкнули скачать!');
+        })
+        playMenu.append(dlButton)
+    })
+
+    return playMenuList.length    
+}
+
+//*********************************************************************************************************** */
 let allLinks = [];
 const activeLink = document.createElement('a');
 activeLink.target = "_blank"
