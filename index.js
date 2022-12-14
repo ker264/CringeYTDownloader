@@ -1,46 +1,27 @@
 import express from 'express';
 import cors from 'cors';
 import ytdl from 'ytdl-core';
-import path from 'path';
-import bodyParser from 'body-parser'
-import { CLIENT_RENEG_LIMIT } from 'tls';
-
-const urlEncodedParser = bodyParser.urlencoded({
-    extended: false,
-})
 
 const app = express();
-const __dirname = path.resolve();
-
-app.set('view engine', 'ejs')
-app.set('views', 'ejs')
-
 app.use(cors());
-app.use(express.static(path.resolve(__dirname, 'static')))
 
 app.listen(4000, () => {
     console.log('Server Works !!! At port 4000');
 });
 
-
-let downloadedNames = []
-
 app.get('/download', (req, res) => {
-    let URL = req.query.URL;    
-    let name = req.query.name.trim() 
-    // name = name.replace('【','[')
-    // name = name.replace('】',']')
-    console.log(name);
-    name = name.replace(RegExp("[^\\d\\w\\s()\\[\\],.:;!?/']", "g"),'_')
-    console.log(name);
-    res.header(`Content-Disposition`, `attachment; filename="${name}.mp3"`);    
-    downloadedNames.push(name);    
-    ytdl(URL, {
-        quality: "bestaudio",
-        format: "mp3"
-    }).pipe(res);    
-});
 
-app.get('/', (req, res) => {
-    res.render('index', { title: "Main Page", active: "main" });
-})
+    let cleanShitReg = RegExp("[^\\d\\w\\s()\\[\\],.:;!?/']", "g");
+    let URL = req.query.URL;
+    let name = req.query.name.trim();
+    // let playlist = req.query.playlistName;
+    
+    name = name.replace(cleanShitReg, ' ')
+
+    res.header(`Content-Disposition`, `attachment; filename="${name}.webm"`);
+    ytdl(URL, {
+        quality: "highestaudio"
+        // quality: "lowestaudio",
+        // format: "mp3"
+    }).pipe(res);
+});
