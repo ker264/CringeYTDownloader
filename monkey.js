@@ -12,7 +12,6 @@
 function loadGUI() {
     let playMenuList = document.querySelectorAll(".play-menu")
 
-
     playMenuList.forEach(playMenu => {
         let dlButton = document.createElement('button');
         dlButton.innerHTML = "Скачать"
