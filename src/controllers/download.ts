@@ -1,25 +1,15 @@
-import express from 'express';
-import cors from 'cors';
+import stream from 'stream/promises';
 import ytdl from 'ytdl-core';
 import fs from 'fs';
-import stream from 'stream/promises';
 import childProcess from 'child_process';
 import util from 'util';
 
-const app = express();
 const exec = util.promisify(childProcess.exec)
 
-app.use(cors());
-
-app.listen(4000, () => {
-    console.log('Server Works !!! At port 4000');
-});
-
-app.get('/download', async (req, res) => {
-
+export const download = async (req, res) => {
     let cleanShitReg = RegExp("[^\\d\\w\\s()\\[\\],.;!']", "g");
-    let URL = req.query.URL;
-    let name = req.query.name;
+    let URL = req.query.URL.toString();
+    let name = req.query.name.toString();
     // let playlist = req.query.playlistName;
 
     name = name.replace(cleanShitReg, ' ').replace(RegExp('\\s+', 'g'), ' ').trim();
@@ -46,7 +36,6 @@ app.get('/download', async (req, res) => {
     } catch (err) {
         console.log(err);
     } finally {
-        // fs.rm(`./audio/${name}.mp3`);
-        // fs.rm(`./audio/${name}.webm`);
+        console.log(`${name}: ready`);
     }
-});
+}
