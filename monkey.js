@@ -1,5 +1,3 @@
-import { linkList } from "./build/controllers/linkList";
-
 (function () {
     'use strict';
 
@@ -48,6 +46,31 @@ function dlButtonClicked() {
 }
 
 //************************************************************************ */
+(function () {
+    'use strict';
+
+    document.addEventListener("DOMContentLoaded", () => {
+        console.log("DOM Loaded")
+        let intervalGUI = setInterval(() => {
+            if (loadGUI()) clearInterval(intervalGUI)
+        }, 1000);
+    });
+})();
+
+function loadGUI() {
+    let playMenuList = document.querySelectorAll(".play-menu")
+
+
+    playMenuList.forEach(playMenu => {
+        let dlButton = document.createElement('button');
+        dlButton.innerHTML = "Скачать"
+        dlButton.addEventListener('click', dlButtonClicked)
+        playMenu.append(dlButton)
+    })
+
+    return playMenuList.length
+}
+
 async function dlButtonClicked() {
     let allLinks = [];
     const activeLink = document.createElement('a');
@@ -64,22 +87,20 @@ async function dlButtonClicked() {
         })
     })
 
-    // for (let i = 0; i < allLinks.length; i++) {
-    //     //break
-    //     activeLink.href = `http://localhost:4000/download?URL=https://www.youtube.com${allLinks[i].URL}&name=${allLinks[i].name}&playlistName=${allLinks[i].playlistName}`
-    //     activeLink.click()
-    // }
+    let id = Date.now();
 
-
-    const resP = await fetch('http://localhost:4000/linkList', {
+    const resP = await fetch('http://localhost:4000/saveList', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(allLinks)
+        body: JSON.stringify({
+            'allLinks': allLinks,
+            'id': id})
     })
 
-    // activeLink.href = `http://localhost:4000/linkList?linkList=${allLinks}`
-    // activeLink.click();
+    activeLink.href = `http://localhost:4000/dlPage?id=${id}`
+    activeLink.click();
 }
+
 

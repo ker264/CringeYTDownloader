@@ -1,7 +1,7 @@
-let allLinkList = [];
+export let allLinkList = [];
 
 export const dlPage = async (req, res) => {
-    res.render('index', { linkList: allLinkList[req.query.id], msg2:"1561dsfsd" });
+    res.render('index');
     console.log(allLinkList[req.query.id]);
 }
 
