@@ -1,9 +1,6 @@
-import WebSocket, { WebSocketServer } from "ws";
 import { getListById, getWholeList } from "./linkList.js";
 
-export const wsServer = new WebSocketServer({ port: 3000 });
-
-wsServer.on('connection', ws => {
+export const wsConnect = ws => {
     ws.send(JSON.stringify({
         text: 'Соединение установлено',
         id: "hEllO/!/>?"
@@ -14,7 +11,8 @@ wsServer.on('connection', ws => {
 
         switch (msg.type) {
             case "dlStatus":
-                console.log(getWholeList());
+                console.log("Albedo:", getWholeList());
+                console.log("id:", msg.id);
                 getListById(msg.id).forEach((element, index) => {
                     console.log(index, ": ", element.name);
                 });
@@ -22,7 +20,4 @@ wsServer.on('connection', ws => {
             default:
         }
     })
-})
-
-console.log("wsServer Working! At port 3000...")
-
+}

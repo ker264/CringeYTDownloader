@@ -5,7 +5,9 @@ import path from 'path';
 import { download } from './controllers/download.js';
 import { dlPage, saveList } from './controllers/linkList.js';
 import { downloadById } from './controllers/api.js';
-import { wsServer } from './controllers/wsServer.js';
+import WebSocket, { WebSocketServer } from "ws";
+import { wsConnect } from './controllers/wsServer.js';
+
 
 const __dirname = path.resolve()
 const app = express();
@@ -18,6 +20,10 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
 app.use(cors());
+
+const wsServer = new WebSocketServer({ port: 3000 });
+
+wsServer.on("connection", ws => wsConnect(ws));
 
 app.listen(4000, () => {
     console.log('Server Works !!! At port 4000');

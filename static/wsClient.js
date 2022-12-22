@@ -7,7 +7,7 @@ ws.onopen = () => {
     id = (new URL(document.location)).searchParams.get("id")
     ws.send(JSON.stringify({
         type: "dlStatus",
-        b: id
+        id: id
     }))
 }
 
