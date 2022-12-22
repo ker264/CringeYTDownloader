@@ -4,7 +4,8 @@ import path from 'path';
 
 import { download } from './controllers/download.js';
 import { dlPage, saveList } from './controllers/linkList.js';
-import { getListById } from './controllers/api.js';
+import { downloadById } from './controllers/api.js';
+import { wsServer } from './controllers/wsServer.js';
 
 const __dirname = path.resolve()
 const app = express();
@@ -24,7 +25,7 @@ app.listen(4000, () => {
 
 app.get('/download', download);
 app.get('/dlPage', dlPage);
-app.get('/api/getListById/:id', getListById)
+app.get('/api/getListById/:id', downloadById)
 
 app.post('/saveList', saveList);
 

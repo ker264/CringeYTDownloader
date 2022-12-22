@@ -1,17 +1,21 @@
 const ws = new WebSocket('ws://localhost:3000');
 
+let id;
+
 ws.onopen = () => {
-    console.log("Собака открыта!");
+    console.log("Сокет открыт!");
+    id = (new URL(document.location)).searchParams.get("id")
+    ws.send(JSON.stringify({
+        type: "dlStatus",
+        b: id
+    }))
 }
 
 ws.onclose = () => {
-    console.log("Собака закрыта");
+    console.log("Сокет закрыт");
 }
 
 ws.onmessage = response => {
-    console.log("Пришла собака:", response.data);
-}
-
-function Bonk() {
-    ws.send("BonkTheServer!!! ForTheGreaterGood!!!")
+    let resJSON = JSON.parse(response.data);
+    console.log("Пришла собака:", resJSON.text, "Vafu:", resJSON.id);
 }

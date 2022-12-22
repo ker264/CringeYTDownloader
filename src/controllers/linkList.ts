@@ -1,4 +1,4 @@
-export let allLinkList = [];
+let allLinkList = [];
 
 export const dlPage = async (req, res) => {
     res.render('index');
@@ -7,9 +7,6 @@ export const dlPage = async (req, res) => {
 
 export const saveList = async (req, res) => {
     let cleanShitReg = RegExp("[^\\d\\w\\s()\\[\\],.;!']", "g");
-    // let URL = req.query.URL.toString();
-    // let name = req.query.name.toString();
-    // let playlist = req.query.playlistName;
 
     let oneLinkList = []
 
@@ -23,4 +20,12 @@ export const saveList = async (req, res) => {
     allLinkList[req.body.id] = oneLinkList;
 
     res.status(200).json({ status: "Ok" });
+}
+
+export function getListById(id) {
+    return allLinkList[id];
+}
+
+export function getWholeList() {
+    return allLinkList;
 }

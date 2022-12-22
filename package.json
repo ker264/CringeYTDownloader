@@ -6,10 +6,9 @@
     "type": "module",
     "scripts": {
         "test": "node index.js",
-        "serve": "nodemon ./build/index.js",
-        "build": "npx tsc",
-        "serveWS": "nodemon ./build/controllers/index.js"
-        
+        "serve": "nodemon ./build/index.js",        
+        "serveWS": "nodemon ./build/controllers/wsServer.js",
+        "build": "npx tsc"        
     },
     "author": "",
     "license": "ISC",
