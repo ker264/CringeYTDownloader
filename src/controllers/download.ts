@@ -3,39 +3,43 @@ import ytdl from 'ytdl-core';
 import fs from 'fs';
 import childProcess from 'child_process';
 import util from 'util';
+import { allLinkList } from './linkList.js';
 
 const exec = util.promisify(childProcess.exec)
 
-export const download = async (req, res) => {
-    let cleanShitReg = RegExp("[^\\d\\w\\s()\\[\\],.;!']", "g");
-    let URL = req.query.URL.toString();
-    let name = req.query.name.toString();
-    // let playlist = req.query.playlistName;
+export const download = async (listId, vidId) => {
 
-    name = name.replace(cleanShitReg, ' ').replace(RegExp('\\s+', 'g'), ' ').trim();
-    let pathName = `./audio/${name}.webm`;
+    let URL = `https://www.youtube.com${allLinkList[listId][vidId].URL}`;
+    let name = allLinkList[listId][vidId].name;
+    let status = "error";
+    let pathName = `./audio/${listId}/${name}.webm`;
 
     const writeStream = fs.createWriteStream(pathName)
 
     try {
         //Скачиваем файл на сервер
+        console.log(`download start: ${name}`);
         await stream.pipeline(ytdl(URL, { quality: "highestaudio" }), writeStream);
-        fs.access(pathName, (err) => {
-            console.log(`${pathName} ${err ? 'does not exist' : 'exists'}`);
-        })
+        console.log(`download ok: ${name}`);
+        console.log(`conversion start: ${name}`);
 
         //Конвертируем файл в mp3
-        const { stdout, stderr } = await exec(`d:/ffmpegTest/ffmpeg.exe -y -i "./audio/${name}.webm" "./audio/${name}.mp3"`)
-        console.log('stdout:', stdout);
-        console.error('stderr:', stderr);
+        const { stdout, stderr } = await exec(`d:/ffmpegTest/ffmpeg.exe -y -i "./audio/${listId}/${name}.webm" "./audio/${listId}/${name}.mp3"`)
+        // console.error('stdout:', stdout);
+        // console.error('stderr:', stderr);
 
-        //Отправляем файл пользователю
-        const readStream = fs.createReadStream(`./audio/${name}.mp3`);
-        res.header(`Content-Disposition`, `attachment; filename="${name}.mp3"`);
-        await stream.pipeline(readStream, res);
+        fs.rm(`./audio/${listId}/${name}.webm`, { recursive: true }, (err) => {
+            if (err) console.log(err);
+        })
+
+        URL = `./audio/${listId}/${name}.mp3`;
+        status = "readyToDl";
+
+        console.log(`conversion ok: ${name}`);        
     } catch (err) {
+        console.log(`some error: ${name}`);
         console.log(err);
-    } finally {
-        console.log(`${name}: ready`);
     }
+
+    return { status, URL };
 }

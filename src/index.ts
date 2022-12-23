@@ -4,10 +4,9 @@ import path from 'path';
 
 import { download } from './controllers/download.js';
 import { dlPage, saveList } from './controllers/linkList.js';
-import { downloadById } from './controllers/api.js';
+import { downloadByURL, getListById } from './controllers/api.js';
 import WebSocket, { WebSocketServer } from "ws";
 import { wsConnect } from './controllers/wsServer.js';
-
 
 const __dirname = path.resolve()
 const app = express();
@@ -29,9 +28,9 @@ app.listen(4000, () => {
     console.log('Server Works !!! At port 4000');
 });
 
-app.get('/download', download);
 app.get('/dlPage', dlPage);
-app.get('/api/getListById/:id', downloadById)
+app.get('/api/getListById/:id', getListById)
+app.get('/api/downloadByURL', downloadByURL)
 
 app.post('/saveList', saveList);
 
